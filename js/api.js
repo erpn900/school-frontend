@@ -54,7 +54,7 @@ const API = (() => {
     const res = await fetch(url, {
       method: 'POST',
       redirect: 'follow',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(body),
     });
     const json = await res.json();
