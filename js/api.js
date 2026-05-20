@@ -8,7 +8,7 @@ const API = (() => {
   // After deploying the Apps Script:
   //   Script Editor → Deploy → New Deployment → Web App
   //   Copy the URL and paste below.
-  const BASE_URL = window.BACKEND_URL || 'https://script.google.com/macros/s/AKfycbz42jbxkFCmq0F9F8jo7kka9PuYraYBO8vU1z0FSkVRxmHVt069gy9JYdP06K5-vrECRw/exec';
+  const BASE_URL = window.BACKEND_URL || 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
 
   let _token = localStorage.getItem('school_token') || '';
   let _user  = null;
@@ -54,6 +54,9 @@ const API = (() => {
     const res = await fetch(url, {
       method: 'POST',
       redirect: 'follow',
+      // Apps Script web apps do not answer browser CORS preflight requests.
+      // Sending JSON as text/plain keeps this a simple request while parseBody()
+      // on the backend still receives the same JSON string in postData.contents.
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(body),
     });

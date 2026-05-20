@@ -30,15 +30,15 @@ function buildSidebar(role) {
         { key: 'result', icon: 'result.png', label: 'Results', href: 'results.html' },
         { key: 'attendance', icon: 'attendance.png', label: 'Attendance', href: 'attendance.html' },
         { key: 'calendar', icon: 'calendar.png', label: 'Events', href: 'events.html' },
-        { key: 'message', icon: 'message.png', label: 'Messages', href: '#' },
+        { key: 'message', icon: 'message.png', label: 'Messages', href: 'messages.html' },
         { key: 'announcement', icon: 'announcement.png', label: 'Announcements', href: 'announcements.html' },
       ],
     },
     {
       title: 'OTHER',
       links: [
-        { key: 'profile', icon: 'profile.png', label: 'Profile', href: '#' },
-        { key: 'setting', icon: 'setting.png', label: 'Settings', href: '#' },
+        { key: 'profile', icon: 'profile.png', label: 'Profile', href: 'profile.html' },
+        { key: 'setting', icon: 'setting.png', label: 'Settings', href: 'settings.html' },
         { key: 'logout', icon: 'logout.png', label: 'Logout', href: '#', action: 'API.logout()' },
       ],
     },

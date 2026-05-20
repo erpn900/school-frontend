@@ -59,7 +59,7 @@ function buildModal(id, title, formHtml, onSubmit) {
   return modal;
 }
 
-function renderTable({ containerId, columns, rows, onEdit, onDelete }) {
+function renderTable({ containerId, columns, rows, onView, onEdit, onDelete }) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
@@ -69,7 +69,7 @@ function renderTable({ containerId, columns, rows, onEdit, onDelete }) {
   }
 
   const thead = columns.map(c => `<th class="${c.className || ''}">${c.label}</th>`).join('') +
-    (onEdit || onDelete ? '<th>Actions</th>' : '');
+    (onView || onEdit || onDelete ? '<th>Actions</th>' : '');
 
   const tbody = rows.map(row => {
     const cells = columns.map(c => {
@@ -78,6 +78,9 @@ function renderTable({ containerId, columns, rows, onEdit, onDelete }) {
     }).join('');
 
     const actions = [];
+    if (onView) {
+      actions.push(`<button class="row-action row-action-view" title="View" onclick="viewRow('${row.id}')"><img src="../assets/lama/view.png" alt=""></button>`);
+    }
     if (onEdit) {
       actions.push(`<button class="row-action row-action-edit" title="Edit" onclick='editRow(${JSON.stringify(row)})'><img src="../assets/lama/update.png" alt=""></button>`);
     }
@@ -178,4 +181,17 @@ function renderUserBadge(containerId) {
       <small>${user.role}</small>
     </div>
     <button class="nav-avatar" title="Logout" onclick="API.logout()"><img src="../assets/lama/avatar.png" alt=""></button>`;
+}
+
+function getDashboardPath(role) {
+  return {
+    admin: 'admin-dashboard.html',
+    teacher: 'teacher-dashboard.html',
+    student: 'student-dashboard.html',
+    parent: 'parent-dashboard.html',
+  }[role] || 'student-dashboard.html';
+}
+
+function getQueryParam(name) {
+  return new URLSearchParams(location.search).get(name);
 }
