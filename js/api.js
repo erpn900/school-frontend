@@ -6,7 +6,7 @@ const API = (() => {
   const GAS_URL = window.BACKEND_URL || 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
 
   const SUPABASE_URL = (window.SUPABASE_URL || 'https://cllnpkysirxrjxwixqme.supabase.co').replace(/\/$/, '');
-  const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'PASTE_SUPABASE_ANON_KEY_HERE';
+  const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsbG5wa3lzaXJ4cmp4d2l4cW1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyODUwOTMsImV4cCI6MjA5NDg2MTA5M30.xYDIvV8bwnm9Thn2wctNzERCBVWG07tKpVHEtlR48Xk';
   const USE_SUPABASE = SUPABASE_URL &&
     SUPABASE_ANON_KEY &&
     SUPABASE_ANON_KEY !== 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsbG5wa3lzaXJ4cmp4d2l4cW1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyODUwOTMsImV4cCI6MjA5NDg2MTA5M30.xYDIvV8bwnm9Thn2wctNzERCBVWG07tKpVHEtlR48Xk';
