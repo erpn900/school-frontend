@@ -1,6 +1,3 @@
-<!-- sidebar.html – included via JS into every dashboard page -->
-<!-- Usage: document.getElementById('sidebar').innerHTML = buildSidebar(role); -->
-<script>
 function buildSidebar(role) {
   const allLinks = {
     admin: [
@@ -121,4 +118,3 @@ function initLayout(allowedRoles) {
 
   return user;
 }
-</script>
