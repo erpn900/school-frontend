@@ -1,20 +1,24 @@
-// ============================================================
-// utils.js  –  Shared UI helpers
-// ============================================================
+// Shared UI helpers for the static SchoolMS frontend.
 
-// ── Toast ──────────────────────────────────────────────────
 function toast(msg, type = 'success') {
   const el = document.createElement('div');
   el.className = `toast toast-${type}`;
   el.textContent = msg;
   document.body.appendChild(el);
   setTimeout(() => el.classList.add('show'), 10);
-  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 3000);
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(() => el.remove(), 300);
+  }, 3000);
 }
 
-// ── Modal ──────────────────────────────────────────────────
-function openModal(id)  { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
 
 function buildModal(id, title, formHtml, onSubmit) {
   let modal = document.getElementById(id);
@@ -24,11 +28,12 @@ function buildModal(id, title, formHtml, onSubmit) {
     modal.className = 'modal-overlay';
     document.body.appendChild(modal);
   }
+
   modal.innerHTML = `
     <div class="modal">
       <div class="modal-header">
         <h3>${title}</h3>
-        <button onclick="closeModal('${id}')" class="btn-icon">✕</button>
+        <button onclick="closeModal('${id}')" class="btn-icon">x</button>
       </div>
       <div class="modal-body">
         <form id="${id}-form">${formHtml}</form>
@@ -38,6 +43,7 @@ function buildModal(id, title, formHtml, onSubmit) {
         <button type="submit" form="${id}-form" class="btn btn-primary">Save</button>
       </div>
     </div>`;
+
   document.getElementById(id + '-form').addEventListener('submit', async e => {
     e.preventDefault();
     const fd = new FormData(e.target);
@@ -49,10 +55,10 @@ function buildModal(id, title, formHtml, onSubmit) {
       toast(err.message, 'error');
     }
   });
+
   return modal;
 }
 
-// ── Data Table ─────────────────────────────────────────────
 function renderTable({ containerId, columns, rows, onEdit, onDelete }) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -62,17 +68,23 @@ function renderTable({ containerId, columns, rows, onEdit, onDelete }) {
     return;
   }
 
-  const thead = columns.map(c => `<th>${c.label}</th>`).join('') +
+  const thead = columns.map(c => `<th class="${c.className || ''}">${c.label}</th>`).join('') +
     (onEdit || onDelete ? '<th>Actions</th>' : '');
 
   const tbody = rows.map(row => {
     const cells = columns.map(c => {
-      const val = c.render ? c.render(row) : (row[c.key] ?? '—');
-      return `<td>${val}</td>`;
+      const val = c.render ? c.render(row) : (row[c.key] ?? '-');
+      return `<td class="${c.className || ''}">${val}</td>`;
     }).join('');
+
     const actions = [];
-    if (onEdit)   actions.push(`<button class="btn-icon" onclick='editRow(${JSON.stringify(row)})'>✏️</button>`);
-    if (onDelete) actions.push(`<button class="btn-icon btn-danger" onclick="deleteRow('${row.id}')">🗑️</button>`);
+    if (onEdit) {
+      actions.push(`<button class="row-action row-action-edit" title="Edit" onclick='editRow(${JSON.stringify(row)})'><img src="../assets/lama/update.png" alt=""></button>`);
+    }
+    if (onDelete) {
+      actions.push(`<button class="row-action row-action-delete" title="Delete" onclick="deleteRow('${row.id}')"><img src="../assets/lama/delete.png" alt=""></button>`);
+    }
+
     const actionCell = actions.length ? `<td class="action-cell">${actions.join('')}</td>` : '';
     return `<tr>${cells}${actionCell}</tr>`;
   }).join('');
@@ -86,16 +98,20 @@ function renderTable({ containerId, columns, rows, onEdit, onDelete }) {
     </div>`;
 }
 
-// ── Pagination ─────────────────────────────────────────────
 function renderPagination({ containerId, page, totalPages, onPage }) {
   const container = document.getElementById(containerId);
   if (!container) return;
-  if (totalPages <= 1) { container.innerHTML = ''; return; }
+  if (totalPages <= 1) {
+    container.innerHTML = '';
+    return;
+  }
 
   const prev = page > 1
-    ? `<button class="btn btn-ghost" onclick="(${onPage})(${page - 1})">← Prev</button>` : '';
+    ? `<button class="pager-btn" onclick="(${onPage})(${page - 1})">Prev</button>`
+    : '<button class="pager-btn" disabled>Prev</button>';
   const next = page < totalPages
-    ? `<button class="btn btn-ghost" onclick="(${onPage})(${page + 1})">Next →</button>` : '';
+    ? `<button class="pager-btn" onclick="(${onPage})(${page + 1})">Next</button>`
+    : '<button class="pager-btn" disabled>Next</button>';
 
   container.innerHTML = `
     <div class="pagination">
@@ -105,41 +121,61 @@ function renderPagination({ containerId, page, totalPages, onPage }) {
     </div>`;
 }
 
-// ── Search Debounce ────────────────────────────────────────
 function debounce(fn, ms = 300) {
   let t;
-  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), ms);
+  };
 }
 
-// ── Date formatting ────────────────────────────────────────
 function fmtDate(val) {
-  if (!val) return '—';
-  try { return new Date(val).toLocaleDateString(); } catch (_) { return val; }
+  if (!val) return '-';
+  try {
+    return new Date(val).toLocaleDateString();
+  } catch (_) {
+    return val;
+  }
 }
 
 function fmtDateTime(val) {
-  if (!val) return '—';
-  try { return new Date(val).toLocaleString(); } catch (_) { return val; }
+  if (!val) return '-';
+  try {
+    return new Date(val).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+  } catch (_) {
+    return val;
+  }
 }
 
-// ── Guard ──────────────────────────────────────────────────
 function requireAuth(allowedRoles) {
-  if (!API.isLoggedIn()) { window.location.href = '../index.html'; return false; }
+  if (!API.isLoggedIn()) {
+    window.location.href = '../index.html';
+    return false;
+  }
+
   const user = API.getUser();
   if (allowedRoles && !allowedRoles.includes(user.role)) {
     toast('Access denied', 'error');
     window.location.href = '../index.html';
     return false;
   }
+
   return user;
 }
 
 function renderUserBadge(containerId) {
   const user = API.getUser();
   if (!user) return;
+
   const el = document.getElementById(containerId);
-  if (el) el.innerHTML = `
-    <span class="role-badge role-${user.role}">${user.role}</span>
-    <strong>${user.username}</strong>
-    <button class="btn btn-ghost btn-sm" onclick="API.logout()">Logout</button>`;
+  if (!el) return;
+
+  el.innerHTML = `
+    <button class="nav-circle" title="Messages"><img src="../assets/lama/message.png" alt=""></button>
+    <button class="nav-circle nav-circle-badged" title="Announcements"><img src="../assets/lama/announcement.png" alt=""><span>1</span></button>
+    <div class="nav-user-copy">
+      <strong>${user.username}</strong>
+      <small>${user.role}</small>
+    </div>
+    <button class="nav-avatar" title="Logout" onclick="API.logout()"><img src="../assets/lama/avatar.png" alt=""></button>`;
 }
