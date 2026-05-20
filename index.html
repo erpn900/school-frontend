@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Management – Login</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Set your Apps Script deployment URL here -->
+  <script>window.BACKEND_URL = 'https://script.google.com/macros/s/AKfycbz42jbxkFCmq0F9F8jo7kka9PuYraYBO8vU1z0FSkVRxmHVt069gy9JYdP06K5-vrECRw/exec';</script>
+</head>
+<body>
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon-lg">🎓</div>
+      <h1>SchoolMS</h1>
+      <p>School Management System</p>
+    </div>
+
+    <!-- Role tabs -->
+    <div class="role-tabs">
+      <button class="role-tab active" data-role="admin"   onclick="setRole('admin')">Admin</button>
+      <button class="role-tab"        data-role="teacher" onclick="setRole('teacher')">Teacher</button>
+      <button class="role-tab"        data-role="student" onclick="setRole('student')">Student</button>
+      <button class="role-tab"        data-role="parent"  onclick="setRole('parent')">Parent</button>
+    </div>
+
+    <form id="login-form">
+      <div class="form-group mb-4">
+        <label for="username">Username</label>
+        <input id="username" name="username" class="form-control" placeholder="Enter username" required autofocus>
+      </div>
+      <div class="form-group mb-4">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" class="form-control" placeholder="Enter password" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-full" id="login-btn">
+        Sign In
+      </button>
+      <p id="login-err" class="text-sm" style="color:var(--danger);margin-top:10px;display:none"></p>
+    </form>
+
+    <p class="text-sm text-muted mt-4" style="text-align:center">
+      Default admin: <strong>admin / admin123</strong>
+    </p>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script>
+  let selectedRole = 'admin';
+
+  function setRole(role) {
+    selectedRole = role;
+    document.querySelectorAll('.role-tab').forEach(t =>
+      t.classList.toggle('active', t.dataset.role === role));
+  }
+
+  // Already logged in → redirect
+  if (API.isLoggedIn()) {
+    const u = API.getUser();
+    window.location.href = `pages/${u.role}-dashboard.html`;
+  }
+
+  document.getElementById('login-form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const btn = document.getElementById('login-btn');
+    const err = document.getElementById('login-err');
+    btn.disabled = true; btn.textContent = 'Signing in…';
+    err.style.display = 'none';
+
+    try {
+      const data = await API.login(
+        document.getElementById('username').value,
+        document.getElementById('password').value,
+        selectedRole
+      );
+      window.location.href = `pages/${data.role}-dashboard.html`;
+    } catch (ex) {
+      err.textContent = ex.message;
+      err.style.display = 'block';
+    } finally {
+      btn.disabled = false; btn.textContent = 'Sign In';
+    }
+  });
+</script>
+</body>
+</html>
