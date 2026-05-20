@@ -1,105 +1,72 @@
 function buildSidebar(role) {
-  const allLinks = {
-    admin: [
-      { section: 'Overview',   links: [
-        { href: 'admin-dashboard.html',  icon: '🏠', label: 'Dashboard' },
-      ]},
-      { section: 'People', links: [
-        { href: 'students.html',  icon: '🎒', label: 'Students' },
-        { href: 'teachers.html',  icon: '👩‍🏫', label: 'Teachers' },
-        { href: 'parents.html',   icon: '👨‍👩‍👧', label: 'Parents' },
-      ]},
-      { section: 'Academics', links: [
-        { href: 'classes.html',   icon: '🏛️', label: 'Classes' },
-        { href: 'subjects.html',  icon: '📚', label: 'Subjects' },
-        { href: 'lessons.html',   icon: '📖', label: 'Lessons' },
-        { href: 'exams.html',     icon: '📝', label: 'Exams' },
-        { href: 'assignments.html', icon: '📋', label: 'Assignments' },
-        { href: 'results.html',   icon: '📊', label: 'Results' },
-        { href: 'attendance.html',icon: '✅', label: 'Attendance' },
-      ]},
-      { section: 'School', links: [
-        { href: 'events.html',       icon: '📅', label: 'Events' },
-        { href: 'announcements.html',icon: '📢', label: 'Announcements' },
-      ]},
-    ],
-    teacher: [
-      { section: 'Overview', links: [
-        { href: 'teacher-dashboard.html', icon: '🏠', label: 'Dashboard' },
-      ]},
-      { section: 'Academics', links: [
-        { href: 'lessons.html',    icon: '📖', label: 'My Lessons' },
-        { href: 'exams.html',      icon: '📝', label: 'Exams' },
-        { href: 'assignments.html',icon: '📋', label: 'Assignments' },
-        { href: 'attendance.html', icon: '✅', label: 'Attendance' },
-        { href: 'results.html',    icon: '📊', label: 'Results' },
-      ]},
-      { section: 'School', links: [
-        { href: 'events.html',       icon: '📅', label: 'Events' },
-        { href: 'announcements.html',icon: '📢', label: 'Announcements' },
-      ]},
-    ],
-    student: [
-      { section: 'Overview', links: [
-        { href: 'student-dashboard.html', icon: '🏠', label: 'Dashboard' },
-      ]},
-      { section: 'Academics', links: [
-        { href: 'lessons.html',    icon: '📖', label: 'Schedule' },
-        { href: 'exams.html',      icon: '📝', label: 'Exams' },
-        { href: 'assignments.html',icon: '📋', label: 'Assignments' },
-        { href: 'results.html',    icon: '📊', label: 'My Results' },
-        { href: 'attendance.html', icon: '✅', label: 'Attendance' },
-      ]},
-      { section: 'School', links: [
-        { href: 'events.html',       icon: '📅', label: 'Events' },
-        { href: 'announcements.html',icon: '📢', label: 'Announcements' },
-      ]},
-    ],
-    parent: [
-      { section: 'Overview', links: [
-        { href: 'parent-dashboard.html', icon: '🏠', label: 'Dashboard' },
-      ]},
-      { section: 'My Children', links: [
-        { href: 'results.html',    icon: '📊', label: 'Results' },
-        { href: 'attendance.html', icon: '✅', label: 'Attendance' },
-      ]},
-      { section: 'School', links: [
-        { href: 'events.html',       icon: '📅', label: 'Events' },
-        { href: 'announcements.html',icon: '📢', label: 'Announcements' },
-      ]},
-    ],
+  const iconBase = '../assets/lama/';
+  const visible = {
+    admin: ['home', 'teacher', 'student', 'parent', 'subject', 'class', 'lesson', 'exam', 'assignment', 'result', 'attendance', 'calendar', 'message', 'announcement', 'profile', 'setting', 'logout'],
+    teacher: ['home', 'teacher', 'student', 'parent', 'class', 'lesson', 'exam', 'assignment', 'result', 'attendance', 'calendar', 'message', 'announcement', 'profile', 'setting', 'logout'],
+    student: ['home', 'lesson', 'exam', 'assignment', 'result', 'attendance', 'calendar', 'message', 'announcement', 'profile', 'setting', 'logout'],
+    parent: ['home', 'exam', 'assignment', 'result', 'attendance', 'calendar', 'message', 'announcement', 'profile', 'setting', 'logout'],
   };
 
-  const sections = allLinks[role] || allLinks.student;
+  const dashboardByRole = {
+    admin: 'admin-dashboard.html',
+    teacher: 'teacher-dashboard.html',
+    student: 'student-dashboard.html',
+    parent: 'parent-dashboard.html',
+  };
+
+  const menuItems = [
+    {
+      title: 'MENU',
+      links: [
+        { key: 'home', icon: 'home.png', label: 'Home', href: dashboardByRole[role] || 'student-dashboard.html' },
+        { key: 'teacher', icon: 'teacher.png', label: 'Teachers', href: 'teachers.html' },
+        { key: 'student', icon: 'student.png', label: 'Students', href: 'students.html' },
+        { key: 'parent', icon: 'parent.png', label: 'Parents', href: 'parents.html' },
+        { key: 'subject', icon: 'subject.png', label: 'Subjects', href: 'subjects.html' },
+        { key: 'class', icon: 'class.png', label: 'Classes', href: 'classes.html' },
+        { key: 'lesson', icon: 'lesson.png', label: 'Lessons', href: 'lessons.html' },
+        { key: 'exam', icon: 'exam.png', label: 'Exams', href: 'exams.html' },
+        { key: 'assignment', icon: 'assignment.png', label: 'Assignments', href: 'assignments.html' },
+        { key: 'result', icon: 'result.png', label: 'Results', href: 'results.html' },
+        { key: 'attendance', icon: 'attendance.png', label: 'Attendance', href: 'attendance.html' },
+        { key: 'calendar', icon: 'calendar.png', label: 'Events', href: 'events.html' },
+        { key: 'message', icon: 'message.png', label: 'Messages', href: '#' },
+        { key: 'announcement', icon: 'announcement.png', label: 'Announcements', href: 'announcements.html' },
+      ],
+    },
+    {
+      title: 'OTHER',
+      links: [
+        { key: 'profile', icon: 'profile.png', label: 'Profile', href: '#' },
+        { key: 'setting', icon: 'setting.png', label: 'Settings', href: '#' },
+        { key: 'logout', icon: 'logout.png', label: 'Logout', href: '#', action: 'API.logout()' },
+      ],
+    },
+  ];
+
+  const allowed = visible[role] || visible.student;
   const currentPage = location.pathname.split('/').pop();
 
   let html = `
-    <div class="sidebar-logo">
-      <div class="logo-icon">🎓</div>
-      <div>
-        <div class="logo-text">SchoolMS</div>
-        <div class="logo-sub">Management System</div>
-      </div>
-    </div>`;
+    <a class="sidebar-logo" href="${dashboardByRole[role] || 'student-dashboard.html'}">
+      <img src="${iconBase}logo.png" alt="" class="sidebar-logo-img">
+      <span class="logo-text">SchooLama</span>
+    </a>`;
 
-  for (const sec of sections) {
-    html += `<div class="sidebar-section">
-      <div class="sidebar-section-label">${sec.section}</div>`;
-    for (const lnk of sec.links) {
-      const active = currentPage === lnk.href ? ' active' : '';
-      html += `<a href="${lnk.href}" class="sidebar-link${active}">
-        <span class="icon">${lnk.icon}</span>${lnk.label}
-      </a>`;
+  for (const section of menuItems) {
+    html += `<div class="sidebar-section"><div class="sidebar-section-label">${section.title}</div>`;
+    for (const link of section.links) {
+      if (!allowed.includes(link.key)) continue;
+      const active = link.href !== '#' && currentPage === link.href ? ' active' : '';
+      const action = link.action ? ` onclick="${link.action}; return false;"` : '';
+      html += `
+        <a href="${link.href}" class="sidebar-link${active}"${action}>
+          <img src="${iconBase}${link.icon}" alt="" class="sidebar-link-icon">
+          <span>${link.label}</span>
+        </a>`;
     }
     html += `</div>`;
   }
-
-  html += `<div style="flex:1"></div>
-    <div style="padding:16px 12px;border-top:1px solid var(--border)">
-      <button onclick="API.logout()" class="btn btn-ghost w-full" style="justify-content:center">
-        🚪 Logout
-      </button>
-    </div>`;
 
   return html;
 }
@@ -111,7 +78,6 @@ function initLayout(allowedRoles) {
   document.getElementById('sidebar').innerHTML = buildSidebar(user.role);
   renderUserBadge('user-info');
 
-  // Mobile menu toggle
   document.getElementById('menu-toggle')?.addEventListener('click', () => {
     document.getElementById('sidebar').classList.toggle('open');
   });
