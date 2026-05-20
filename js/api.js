@@ -8,7 +8,7 @@ const API = (() => {
   // After deploying the Apps Script:
   //   Script Editor → Deploy → New Deployment → Web App
   //   Copy the URL and paste below.
-  const BASE_URL = window.BACKEND_URL || 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+  const BASE_URL = window.BACKEND_URL || 'https://script.google.com/macros/s/AKfycbz42jbxkFCmq0F9F8jo7kka9PuYraYBO8vU1z0FSkVRxmHVt069gy9JYdP06K5-vrECRw/exec';
 
   let _token = localStorage.getItem('school_token') || '';
   let _user  = null;
