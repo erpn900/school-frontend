@@ -1,103 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SchooLama - Login</title>
-  <link rel="stylesheet" href="css/style.css">
- </head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SchooLama – Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --sky:#C3EBFA; --sky-light:#EDF9FD; --purple:#CFCEFF; --purple-light:#F1F0FF;
+  --yellow:#FAE27C; --yellow-light:#FEFCE8; --bg:#F7F8FA; --white:#ffffff;
+  --text:#1a1a2e; --text-muted:#6b7280; --border:#e5e7eb;
+  --primary:#4361EE; --primary-dark:#3451db; --danger:#ef4444; --radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  background-image:radial-gradient(circle at 20% 20%,rgba(195,235,250,.4) 0%,transparent 50%),
+                   radial-gradient(circle at 80% 80%,rgba(207,206,255,.4) 0%,transparent 50%);}
+.card{background:var(--white);border-radius:20px;padding:40px;width:100%;max-width:420px;
+  margin:24px;box-shadow:0 4px 32px rgba(0,0,0,.09);border:1px solid var(--border);}
+.logo{text-align:center;margin-bottom:28px;}
+.logo-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:4px;}
+.logo-icon{width:40px;height:40px;background:var(--primary);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;}
+.logo-text{font-family:'Playfair Display',serif;font-size:26px;color:var(--text);}
+.logo p{color:var(--text-muted);font-size:14px;}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;
+  background:var(--bg);padding:4px;border-radius:10px;margin-bottom:22px;}
+.tab{padding:8px 4px;border:none;background:transparent;border-radius:8px;
+  font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;
+  color:var(--text-muted);cursor:pointer;transition:all .2s;}
+.tab.active{background:var(--white);color:var(--primary);box-shadow:0 1px 8px rgba(0,0,0,.1);}
+.fg{margin-bottom:16px;}
+label{display:block;font-size:13px;font-weight:500;color:var(--text);margin-bottom:5px;}
+input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s;}
+input:focus{border-color:var(--primary);}
+.btn{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;
+  border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;
+  cursor:pointer;transition:background .2s;}
+.btn:hover{background:var(--primary-dark);}
+.btn:disabled{opacity:.6;cursor:not-allowed;}
+.err{color:var(--danger);font-size:13px;margin-top:10px;text-align:center;display:none;}
+.hint{text-align:center;margin-top:16px;font-size:13px;color:var(--text-muted);}
+.hint strong{color:var(--text);}
+.debug{font-size:11px;color:var(--text-muted);margin-top:8px;text-align:center;word-break:break-all;}
+</style>
+</head>
 <body>
-<div class="login-wrapper">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="logo-brand-row">
-        <img src="assets/lama/logo.png" alt="">
-        <h1>SchooLama</h1>
-      </div>
-      <p>Sign in to your account</p>
+<div class="card">
+  <div class="logo">
+    <div class="logo-row">
+      <div class="logo-icon">S</div>
+      <span class="logo-text">SchooLama</span>
     </div>
-
-    <!-- Role tabs -->
-    <div class="role-tabs">
-      <button class="role-tab active" data-role="admin"   onclick="setRole('admin')">Admin</button>
-      <button class="role-tab"        data-role="teacher" onclick="setRole('teacher')">Teacher</button>
-      <button class="role-tab"        data-role="student" onclick="setRole('student')">Student</button>
-      <button class="role-tab"        data-role="parent"  onclick="setRole('parent')">Parent</button>
-    </div>
-
-    <form id="login-form">
-      <div class="form-group mb-4">
-        <label for="username">Username</label>
-        <input id="username" name="username" class="form-control" placeholder="Enter username" required autofocus>
-      </div>
-      <div class="form-group mb-4">
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" class="form-control" placeholder="Enter password" required>
-      </div>
-      <button type="submit" class="btn btn-primary w-full" id="login-btn">
-        Sign In
-      </button>
-      <p id="login-err" class="text-sm" style="color:var(--danger);margin-top:10px;display:none"></p>
-    </form>
-
-<p class="text-sm text-muted mt-4" style="text-align:center">
-  Demo login: <strong id="demo-login">admin / admin123</strong>
-</p>
+    <p>Sign in to your account</p>
   </div>
+
+  <div class="tabs">
+    <button class="tab active" data-role="admin"   onclick="setRole('admin')">Admin</button>
+    <button class="tab"        data-role="teacher" onclick="setRole('teacher')">Teacher</button>
+    <button class="tab"        data-role="student" onclick="setRole('student')">Student</button>
+    <button class="tab"        data-role="parent"  onclick="setRole('parent')">Parent</button>
+  </div>
+
+  <div class="fg">
+    <label for="un">Username</label>
+    <input id="un" placeholder="Enter username" autofocus>
+  </div>
+  <div class="fg">
+    <label for="pw">Password</label>
+    <input id="pw" type="password" placeholder="Enter password">
+  </div>
+
+  <button class="btn" id="login-btn" onclick="doLogin()">Sign In</button>
+  <p class="err" id="err"></p>
+  <p class="hint">Admin login: <strong>admin / admin123</strong></p>
+  <p class="debug" id="debug"></p>
 </div>
 
-<script src="js/api.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-  let selectedRole = 'admin';
+// ── CONFIG ────────────────────────────────────────────
+const SUPABASE_URL  = 'https://cllnpkysirxrjxwixqme.supabase.co';
+// Paste the FULL anon key from your Supabase Settings → API Keys page:
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsbG5wa3lzaXJ4cmp4d2l4cW1lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyODUwOTMsImV4cCI6MjA5NDg2MTA5M30.xYDIvV8bwnm9Thn2wctNzERCBVWG07tKpVHEtlR48Xk';
 
-  const demoLogins = {
-    admin: 'admin / admin123',
-    teacher: 'teacher1 / teacher123',
-    student: 'student1 / student123',
-    parent: 'parent1 / parent123',
-  };
+// ── PATH: works for both root and /school/ subdirectory ──
+function dashboardPath() {
+  const path = window.location.pathname;           // e.g. /school/index.html or /index.html
+  const dir  = path.substring(0, path.lastIndexOf('/') + 1); // e.g. /school/ or /
+  return dir + 'dashboard.html';
+}
 
-  function setRole(role) {
-    selectedRole = role;
-    document.querySelectorAll('.role-tab').forEach(t =>
-      t.classList.toggle('active', t.dataset.role === role)
-    );
+// ── AUTH STATE ────────────────────────────────────────
+const saved = localStorage.getItem('school_user');
+if (saved) {
+  try { JSON.parse(saved); window.location.href = dashboardPath(); } catch(e) { localStorage.removeItem('school_user'); }
+}
 
-    const demo = document.getElementById('demo-login');
-    if (demo) demo.textContent = demoLogins[role] || demoLogins.admin;
+let role = 'admin';
+function setRole(r) {
+  role = r;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.role === r));
+}
+
+// ── LOGIN ─────────────────────────────────────────────
+async function doLogin() {
+  const username = document.getElementById('un').value.trim();
+  const password = document.getElementById('pw').value.trim();
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('err');
+  const dbg = document.getElementById('debug');
+
+  err.style.display = 'none'; dbg.textContent = '';
+
+  if (!username || !password) {
+    showErr('Please enter username and password'); return;
   }
 
-  if (API.isLoggedIn()) {
-    const u = API.getUser();
-    window.location.href = `pages/${u.role}-dashboard.html`;
+  btn.disabled = true; btn.textContent = 'Signing in…';
+
+  // ── Admin: hardcoded (no DB needed) ─────────────────
+  if (role === 'admin' && username === 'admin' && password === 'admin123') {
+    save({ username, role: 'admin', name: 'Admin User' });
+    return;
   }
 
-  document.getElementById('login-form').addEventListener('submit', async e => {
-    e.preventDefault();
+  // ── Other roles: look up in Supabase ────────────────
+  // If anon key is still placeholder, skip DB and use demo data
+  if (SUPABASE_ANON.includes('REPLACE_THIS')) {
+    dbg.textContent = '⚠️ Supabase key not set — only admin login works';
+    showErr('Only admin login available (Supabase key not configured)');
+    btn.disabled = false; btn.textContent = 'Sign In'; return;
+  }
 
-    const btn = document.getElementById('login-btn');
-    const err = document.getElementById('login-err');
+  try {
+    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    const tableMap = { teacher:'Teacher', student:'Student', parent:'Parent' };
+    const table = tableMap[role];
+    const { data, error } = await client
+      .from(table)
+      .select('id, username, name, surname')
+      .eq('username', username)
+      .maybeSingle();
 
-    btn.disabled = true;
-    btn.textContent = 'Signing in...';
-    err.style.display = 'none';
+    if (error) throw new Error(error.message);
+    if (!data)  throw new Error('Username not found');
 
-    try {
-      const data = await API.login(
-        document.getElementById('username').value.trim(),
-        document.getElementById('password').value.trim(),
-        selectedRole.trim().toLowerCase()
-      );
+    save({ ...data, role, name: data.name + ' ' + (data.surname||'') });
+  } catch(e) {
+    showErr(e.message);
+    btn.disabled = false; btn.textContent = 'Sign In';
+  }
+}
 
-      window.location.href = `pages/${data.role}-dashboard.html`;
-    } catch (ex) {
-      err.textContent = ex.message;
-      err.style.display = 'block';
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Sign In';
-    }
-  });
+function save(user) {
+  localStorage.setItem('school_user', JSON.stringify(user));
+  window.location.href = dashboardPath();
+}
+
+function showErr(msg) {
+  const el = document.getElementById('err');
+  el.textContent = msg; el.style.display = 'block';
+  document.getElementById('login-btn').disabled = false;
+  document.getElementById('login-btn').textContent = 'Sign In';
+}
+
+document.querySelectorAll('input').forEach(i => i.addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+}));
 </script>
-  </body>
+</body>
 </html>
