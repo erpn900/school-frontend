@@ -136,10 +136,10 @@ async function doLogin() {
     btn.disabled = false; btn.textContent = 'Sign In'; return;
   }
 
-  try {
-    const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-    const tableMap = { teacher:'Teacher', student:'Student', parent:'Parent' };
-    const table = tableMap[role];
+try {
+  const client = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+  const tableMap = { teacher:'teachers', student:'students', parent:'parents' };
+  const table = tableMap[role];
     const { data, error } = await client
       .from(table)
       .select('id, username, name, surname')
